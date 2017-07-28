@@ -126,7 +126,7 @@ public void CheckVIP(int client)
 			if(StrEqual(bufferparts[0], steamid, true))
 			{
 				isVIP[client] = StringToInt(bufferparts[1]);
-				PrintToChatAll("[DEBUG] VIP Level of %N is %i", client, iSVIP[client]);
+				PrintToChatAll("[DEBUG] VIP Level of %N is %i", client, isVIP[client]);
 				break;
 			}
 		}
@@ -159,4 +159,4 @@ public void ClearTimer(Handle Timer)
 		CloseHandle(Timer);
 		Timer = INVALID_HANDLE;
 	}
-}  
+}
