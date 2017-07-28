@@ -133,7 +133,7 @@ public void CheckVIP(int client)
 		PrintToChatAll("[DEBUG] %N (%s) not found.", client, steamid);
 	}
 	CloseHandle(rFile);
-	StartTimers(client);
+	if (isVIP[client] > 0) StartTimers(client);
 }
 
 public void StartTimers(int client)
