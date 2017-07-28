@@ -114,7 +114,6 @@ public void CheckVIP(int client)
 	char bufferparts[2][50];
 
 	GetClientAuthId(client, AuthId_Steam2, steamid, sizeof(steamid));
-	PrintToChatAll("[DEBUG] STEAM ID of %N is %s", client, steamid);
 	
 	while (ReadFileLine(rFile, buffer, sizeof(buffer)))
 	{
@@ -126,11 +125,9 @@ public void CheckVIP(int client)
 			if(StrEqual(bufferparts[0], steamid, true))
 			{
 				isVIP[client] = StringToInt(bufferparts[1]);
-				PrintToChatAll("[DEBUG] VIP Level of %N is %i", client, isVIP[client]);
 				break;
 			}
 		}
-		PrintToChatAll("[DEBUG] %N (%s) not found.", client, steamid);
 	}
 	CloseHandle(rFile);
 	if (isVIP[client] > 0) StartTimers(client);
@@ -144,11 +141,12 @@ public void StartTimers(int client)
 public Action GiveCredits(Handle timer, int client)
 {
 	int bonus;
+	int bonus2;
 	if (isVIP[client] == 1) bonus = g_CreditsBronze;
 	else if (isVIP[client] == 2) bonus = g_CreditsSilver;
 	else if (isVIP[client] == 3) bonus = g_CreditsGold;
-	bonus = bonus + Store_GetClientCredits(client);
-	Store_SetClientCredits(client, bonus);
+	bonus2 = bonus + Store_GetClientCredits(client);
+	Store_SetClientCredits(client, bonus2);
 	PrintToChatAll("%s %N just got %i credits for being a VIP.", CHAT_PREFIX, client, bonus);
 }
 
