@@ -162,8 +162,9 @@ public Action GiveCredits(Handle timer, int client)
 	if (isVIP[client] == 1) bonus = g_CreditsBronze;
 	else if (isVIP[client] == 2) bonus = g_CreditsSilver;
 	else if (isVIP[client] == 3) bonus = g_CreditsGold;
-	Store_SetClientCredits(client, Store_GetClientCredits(client) + bonus);
-	PrintToChatAll("%s %n just got %i credits for being a VIP.", CHAT_PREFIX, client, bonus);
+	bonus = bonus + Store_GetClientCredits(client);
+	Store_SetClientCredits(client, bonus);
+	PrintToChatAll("%s %N just got %i credits for being a VIP.", CHAT_PREFIX, client, bonus);
 }
 
 public void ClearTimer(Handle Timer)
