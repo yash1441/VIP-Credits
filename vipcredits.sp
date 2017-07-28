@@ -111,41 +111,26 @@ public void CheckVIP(int client)
 	Handle rFile = OpenFile(g_CfgPath, "r");
 	char buffer[150];
 	char steamid[MAX_NAME_LENGTH];
-	char altsteamid[MAX_NAME_LENGTH];
 	char bufferparts[2][50];
-	
-	if (IsClientInGame(client))
-	{
-		GetClientAuthId(client, AuthId_Steam2, steamid, sizeof(steamid));
-		strcopy(altsteamid, sizeof(altsteamid), steamid);
-		if(StrContains(altsteamid, "STEAM_1", true) != -1)
-		{
-			ReplaceString(altsteamid, sizeof(altsteamid), "STEAM_1", "STEAM_0", true);
-		}
-		else
-		{
-			ReplaceString(altsteamid, sizeof(altsteamid), "STEAM_0", "STEAM_1", true);
-		}
-	}
-	else
-	{
-		CloseHandle(rFile);
-		return;
-	}
+
+	GetClientAuthId(client, AuthId_Steam2, steamid, sizeof(steamid));
+	PrintToChatAll("[DEBUG] STEAM ID of %N is %s", client, steamid);
 	
 	while (ReadFileLine(rFile, buffer, sizeof(buffer)))
 	{
 		ReplaceString(buffer, sizeof(buffer), "\n", "", false);
 		if (!buffer[0] || buffer[0] == ';' || buffer[0] == '/' && buffer[1] == '/') continue;
 		ExplodeString(buffer, "-", bufferparts, 2, sizeof(bufferparts[]));
-		if(StrContains(bufferparts[0], "STEAM_", true) != -1) //check if steam ID
+		if(StrContains(bufferparts[0], "STEAM_", true) != -1)
 		{
-			if(StrEqual(bufferparts[0], steamid, true) || StrEqual(bufferparts[0], altsteamid, true))
+			if(StrEqual(bufferparts[0], steamid, true))
 			{
 				isVIP[client] = StringToInt(bufferparts[1]);
+				PrintToChatAll("[DEBUG] VIP Level of %N is %i", client, iSVIP[client]);
 				break;
 			}
 		}
+		PrintToChatAll("[DEBUG] %N (%s) not found.", client, steamid);
 	}
 	CloseHandle(rFile);
 	StartTimers(client);
